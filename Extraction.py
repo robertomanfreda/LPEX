@@ -6,7 +6,7 @@ import math
 import argparse
 
 # this folder is used to save the image
-temp_folder = 'C:\\Users\\PC\\Desktop\\temp\\'
+# temp_folder = 'C:\\Users\\PC\\Desktop\\temp\\'
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", type=str, required=True, help="path to image")
@@ -236,28 +236,8 @@ for listOfMatchingChars in listOfListsOfMatchingChars:
     # draw a ROI on the original image
     for i in range(0, len(plates_list)):
         # finds the four vertices of a rotated rect - it is useful to draw the rectangle.
-        p2fRectPoints = cv2.boxPoints(plates_list[i].rrLocationOfPlateInScene)
-
-        # roi rectangle colour
-        rectColour = (0, 255, 0)
-
-        cv2.line(imageContours, tuple(p2fRectPoints[0]), tuple(p2fRectPoints[1]), rectColour, 2)
-        cv2.line(imageContours, tuple(p2fRectPoints[1]), tuple(p2fRectPoints[2]), rectColour, 2)
-        cv2.line(imageContours, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), rectColour, 2)
-        cv2.line(imageContours, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), rectColour, 2)
-
-        cv2.line(img, tuple(p2fRectPoints[0]), tuple(p2fRectPoints[1]), rectColour, 2)
-        cv2.line(img, tuple(p2fRectPoints[1]), tuple(p2fRectPoints[2]), rectColour, 2)
-        cv2.line(img, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), rectColour, 2)
-        cv2.line(img, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), rectColour, 2)
-
-        # cv2.imshow("detected", imageContours)
-        # cv2.imwrite(temp_folder + '11 - detected.png', imageContours)
-
-        cv2.imshow("detectedOriginal", img)
-        # cv2.imwrite(temp_folder + '12 - detectedOriginal.png', img)
-
-        # cv2.imshow("plate", plates_list[i].Plate)
-        # cv2.imwrite(temp_folder + '13 - plate.png', plates_list[i].Plate)
-
+        box = cv2.boxPoints(plates_list[i].rrLocationOfPlateInScene)
+        box = np.int0(box)
+        cv2.drawContours(img,[box], 0, (255, 255, 255), -1)
+        cv2.imwrite(args["image"], img)
 cv2.waitKey(0)
